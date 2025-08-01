@@ -57,8 +57,8 @@ public class Main {
             robot.resetMotors();
             System.out.flush();
             try{
-                Thread.sleep(1000);
-            }catch(InterruptedException ignored){}
+                Thread.sleep(2000);
+            } catch(InterruptedException ignored){}
         }));
 
 

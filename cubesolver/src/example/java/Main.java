@@ -53,7 +53,9 @@ public class Main {
         Robot robot = new RaspberryPiRobot(upMotor, downMotor, rightMotor, leftMotor, frontMotor, backMotor);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.println("Shutdown hook triggered");
             robot.resetMotors();
+            System.out.flush();
         }));
 
 

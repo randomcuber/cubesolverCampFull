@@ -54,7 +54,12 @@ public class Main {
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             System.out.println("Shutdown hook triggered");
-            robot.resetMotors();
+            System.out.flush();
+            try{
+                robot.resetMotors();
+            } catch(Exception e){
+                System.out.println("exception occured while trying to reset motors"+e);
+            }
             System.out.flush();
             try{
                 Thread.sleep(2000);

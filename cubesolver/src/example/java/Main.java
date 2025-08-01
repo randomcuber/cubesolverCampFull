@@ -56,6 +56,9 @@ public class Main {
             System.out.println("Shutdown hook triggered");
             robot.resetMotors();
             System.out.flush();
+            try{
+                Thread.sleep(1000);
+            }catch(InterruptedException ignored){}
         }));
 
 

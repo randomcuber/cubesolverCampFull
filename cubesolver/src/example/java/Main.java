@@ -51,13 +51,13 @@ public class Main {
 
         Robot robot = new RaspberryPiRobot(upMotor, downMotor, rightMotor, leftMotor, frontMotor, backMotor);
 
-        for (int i=0;i<10;i++){
+        for (int i=0;i<100;i++){
             robot.U();
-            robot.D();
-            robot.R();
-            robot.L();
-            robot.F();
-            robot.B();
+//            robot.D();
+//            robot.R();
+//            robot.L();
+//            robot.F();
+//            robot.B();
         }
 
 

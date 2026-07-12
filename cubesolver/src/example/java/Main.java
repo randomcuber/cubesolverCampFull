@@ -32,6 +32,7 @@ public class Main {
                 }
             }
         }
+        isScramblingCube="N";
         autoTune=true;
 
         if ("O".equalsIgnoreCase(method)) {

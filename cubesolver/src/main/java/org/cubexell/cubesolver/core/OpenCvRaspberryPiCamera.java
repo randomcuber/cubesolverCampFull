@@ -241,6 +241,7 @@ public class OpenCvRaspberryPiCamera implements CubeColorInspector{
         };
     }
 
+
     public void captureImage() {
         try {
             ProcessBuilder processBuilder = new ProcessBuilder("libcamera-jpeg", "-o", outputImage, "--width", Integer.toString(imageWidth), "--height", Integer.toString(imageHeight), "--timeout", "1000");//this is basically running a command in terminal that takes a picture with these peramiters.
@@ -262,8 +263,6 @@ public class OpenCvRaspberryPiCamera implements CubeColorInspector{
     public char findColor(int squareX, int squareY, int squareWidth, int squareHeight) {
         Mat image = imread(outputImage);
 
-        int imageWidth = image.cols();
-        int imageHeight = image.rows();
 
         boolean clipped = false;
 
@@ -309,7 +308,9 @@ public class OpenCvRaspberryPiCamera implements CubeColorInspector{
 
         char color = classifyColor(square);
 
+        drawTuningGrid(200);
         drawSquare(squareX, squareY, squareWidth, squareHeight, color);
+
 
         return color;
     }
@@ -411,7 +412,71 @@ public class OpenCvRaspberryPiCamera implements CubeColorInspector{
         }
         return bestColor;
     }
+    public void drawTuningGrid(int gridWidth) {
+        try {
+            BufferedImage image = ImageIO.read(new File(outputImage));
 
+            Graphics2D g2d = image.createGraphics();
+
+            g2d.setColor(Color.BLACK);
+            g2d.setFont(new Font("TimesRoman", Font.BOLD, 25));
+
+            int cols = (int) Math.ceil((double) imageWidth / gridWidth);
+            int rows = (int) Math.ceil((double) imageHeight / gridWidth);
+
+            // Draw vertical lines and labels
+            for (int x = 0; x <= imageWidth; x += gridWidth) {
+                g2d.drawLine(x, 0, x, imageHeight);
+
+                if (x < imageWidth) {
+                    g2d.drawString(
+                            String.valueOf(x),
+                            x + 5,
+                            30
+                    );
+                }
+            }
+
+            // Draw horizontal lines and labels
+            for (int y = 0; y <= imageHeight; y += gridWidth) {
+                g2d.drawLine(0, y, imageWidth, y);
+
+                if (y < imageHeight) {
+                    g2d.drawString(
+                            String.valueOf(y),
+                            5,
+                            y - 5
+                    );
+                }
+            }
+
+            // Draw coordinate labels for each grid square
+            for (int row = 0; row < rows; row++) {
+                for (int col = 0; col < cols; col++) {
+
+                    int x = col * gridWidth;
+                    int y = row * gridWidth;
+
+                    String label = "(" + x + "," + y + ")";
+
+                    g2d.drawString(
+                            label,
+                            x + 5,
+                            y + 55
+                    );
+                }
+            }
+
+            g2d.dispose();
+
+            ImageIO.write(image, "jpg", new File(outputImage));
+
+            System.out.println("Drew tuning grid with spacing " + gridWidth + " pixels.");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public void drawSquare(int squareX, int squareY, int squareWidth, int squareHeight, char color) {
         try {
             BufferedImage image = ImageIO.read(new File(outputImage));//loads the image

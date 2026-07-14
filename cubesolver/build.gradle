@@ -30,6 +30,7 @@ tasks.named('run') {
     if (project.hasProperty('args')) {
         args project.args.split(',')
     }
+    standardInput = System.in
 }
 
 ext {

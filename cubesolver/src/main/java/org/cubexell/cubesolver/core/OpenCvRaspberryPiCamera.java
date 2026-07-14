@@ -213,7 +213,7 @@ public class OpenCvRaspberryPiCamera implements CubeColorInspector{
                 {
                         findColor(1920+offsetX,1180+offsetY,325,200),
                         findColor(2425+offsetX,1450+offsetY,240,200),
-                        findColor(2830+offsetX,1620+offsetY,120,300)
+                        findColor(2680+offsetX,1620+offsetY,120,300)
                 },
         };
     }
@@ -259,14 +259,57 @@ public class OpenCvRaspberryPiCamera implements CubeColorInspector{
         }
     }
 
-    public char findColor(int squareX, int squareY, int squareWidth, int squareHeight) {//the peramiters are the x and y coordinates of the top-left corner, width, and height of the rectangle. (0,0) is the top-left corner of the entire image.
-        Mat image = imread(outputImage);//turns the image into a "Mat" so that opencv can proccess it
+    public char findColor(int squareX, int squareY, int squareWidth, int squareHeight) {
+        Mat image = imread(outputImage);
 
-        Mat square = new Mat(image, new Rect(squareX, squareY, squareWidth, squareHeight));//creates a new mat of just the rectangle
+        int imageWidth = image.cols();
+        int imageHeight = image.rows();
 
-        char color = classifyColor(square);//gets the color of that rectangle
+        boolean clipped = false;
 
-        drawSquare(squareX,squareY,squareWidth,squareHeight, color);//draws the rectangle in the image so that we can look at it and tune it's position
+        // Clip left/top edges
+        if (squareX < 0) {
+            squareWidth += squareX;
+            squareX = 0;
+            clipped = true;
+        }
+
+        if (squareY < 0) {
+            squareHeight += squareY;
+            squareY = 0;
+            clipped = true;
+        }
+
+        // Clip right edge
+        if (squareX + squareWidth > imageWidth) {
+            squareWidth = imageWidth - squareX;
+            clipped = true;
+        }
+
+        // Clip bottom edge
+        if (squareY + squareHeight > imageHeight) {
+            squareHeight = imageHeight - squareY;
+            clipped = true;
+        }
+
+        if (clipped) {
+            System.out.printf(
+                    "Warning: ROI clipped to image bounds. New rectangle: x=%d y=%d w=%d h=%d (image=%dx%d)%n",
+                    squareX, squareY, squareWidth, squareHeight,
+                    imageWidth, imageHeight
+            );
+        }
+
+        if (squareWidth <= 0 || squareHeight <= 0) {
+            System.out.println("Error: ROI lies completely outside the image.");
+            return 'U';
+        }
+
+        Mat square = new Mat(image, new Rect(squareX, squareY, squareWidth, squareHeight));
+
+        char color = classifyColor(square);
+
+        drawSquare(squareX, squareY, squareWidth, squareHeight, color);
 
         return color;
     }

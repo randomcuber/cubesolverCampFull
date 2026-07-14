@@ -176,7 +176,7 @@ public class OpenCvRaspberryPiCamera implements CubeColorInspector{
 
     }
 
-    int offsetX = -100;
+    int offsetX = -100+50;
     int offsetY = -50;
 
     public char[][] inspectBackFace(char center) {
@@ -220,7 +220,7 @@ public class OpenCvRaspberryPiCamera implements CubeColorInspector{
                 {
                         findColor(1920+offsetX,1180+offsetY,325,200),
                         findColor(2425+offsetX,1450+offsetY,240,200),
-                        findColor(2680+offsetX,1620+offsetY,120,300)
+                        findColor(2800+offsetX,1620+offsetY,120,300)
                 },
         };
     }

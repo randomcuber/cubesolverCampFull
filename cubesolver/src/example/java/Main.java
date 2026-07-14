@@ -118,7 +118,7 @@ public class Main {
             System.out.println("Rotate polarizer to minimize glare. Press Enter to proceed...");
             scanner.nextLine();
 
-            preview.destroy();
+            preview.destroyForcibly();
             preview.waitFor();
             Thread.sleep(500);
 

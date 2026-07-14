@@ -185,17 +185,17 @@ public class OpenCvRaspberryPiCamera implements CubeColorInspector{
         color = convertFaceColorToIndex(center);
         return new char[][]{//returns a 2 dimensional array of the colors of the back face
                 {
-                        findColor(970+offsetX,700+offsetY,90,45),//gets the color of the top-left piece of the back face. coordinates are of the top-left corner, width, and height.
+                        findColor(970+offsetX,730+offsetY,90,45),//gets the color of the top-left piece of the back face. coordinates are of the top-left corner, width, and height.
                         findColor(1160+offsetX,550+offsetY,175,60),
                         findColor(1550+offsetX,200+offsetY,150,100),
                 },
                 {
-                        findColor(820+offsetX,1200+offsetY,120,150),
+                        findColor(840+offsetX,1200+offsetY,120,150),
                         center,
                         findColor(1500+offsetX,650+offsetY,230,150)
                 },
                 {
-                        findColor(700+offsetX,1725+offsetY,120,125),
+                        findColor(730+offsetX,1725+offsetY,120,125),
                         findColor(1025+offsetX,1500+offsetY,150,150),
                         findColor(1490+offsetX,1150+offsetY,220,250)
                 },
@@ -208,9 +208,9 @@ public class OpenCvRaspberryPiCamera implements CubeColorInspector{
         color = convertFaceColorToIndex(center);
         return new char[][]{
                 {
-                        findColor(2030+offsetX,225+offsetY,150,100),
-                        findColor(2380+offsetX,530+offsetY,125,125),
-                        findColor(2640+offsetX,720+offsetY,70,50),
+                        findColor(2000+offsetX,225+offsetY,150,100),
+                        findColor(2350+offsetX,530+offsetY,125,125),
+                        findColor(2620+offsetX,720+offsetY,70,50),
                 },
                 {
                         findColor(2000+offsetX,675+offsetY,225,170),
@@ -220,7 +220,7 @@ public class OpenCvRaspberryPiCamera implements CubeColorInspector{
                 {
                         findColor(1920+offsetX,1180+offsetY,325,200),
                         findColor(2425+offsetX,1450+offsetY,240,200),
-                        findColor(2800+offsetX,1620+offsetY,120,300)
+                        findColor(2800+offsetX,1580+offsetY,120,300)
                 },
         };
     }

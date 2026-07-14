@@ -16,6 +16,7 @@ import java.util.concurrent.locks.LockSupport;
 
 public class Main {
 	public static void main(String[] args) throws IOException, InterruptedException {
+        Scanner scanner = new Scanner(System.in);
         String method = "B";
         String isScramblingCube = "Y";
         boolean autoTune = false;
@@ -63,11 +64,11 @@ public class Main {
 
 //        for (int i=0;i<100;i++){
 //            robot.U();
-////            robot.D();
-////            robot.R();
-////            robot.L();
-////            robot.F();
-////            robot.B();
+//            robot.D();
+//            robot.R();
+//            robot.L();
+//            robot.F();
+//            robot.B();
 //        }
 
 
@@ -110,6 +111,13 @@ public class Main {
             Thread.sleep(5000);
         }
 		else {
+            Process preview = new ProcessBuilder(
+                    "libcamera-hello",
+                    "-t", "0"
+            ).start();
+            System.out.println("Rotate polarizer to minimize glare. Press Enter to proceed...");
+            scanner.nextLine();
+
             cubeColors = inspector.inspect();
         }
 

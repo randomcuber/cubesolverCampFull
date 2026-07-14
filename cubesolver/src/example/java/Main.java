@@ -118,6 +118,10 @@ public class Main {
             System.out.println("Rotate polarizer to minimize glare. Press Enter to proceed...");
             scanner.nextLine();
 
+            preview.destroy();
+            preview.waitFor();
+            Thread.sleep(500);
+
             cubeColors = inspector.inspect();
         }
 

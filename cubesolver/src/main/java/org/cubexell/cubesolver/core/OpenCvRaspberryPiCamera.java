@@ -32,6 +32,9 @@ public class OpenCvRaspberryPiCamera implements CubeColorInspector{
     public static int piece;
     public static int color;
 
+    BufferedImage drawingImage;
+    Graphics2D graphics;
+
 
     Robot robot;
 
@@ -56,6 +59,8 @@ public class OpenCvRaspberryPiCamera implements CubeColorInspector{
         }
 
         captureImage();
+        startDrawing();
+        drawTuningGrid(200);
 
         char[][][] cubeColors = new char[6][3][3];//creates a blank matrix of the cube
 
@@ -70,6 +75,8 @@ public class OpenCvRaspberryPiCamera implements CubeColorInspector{
         System.out.println("Down Face");
         char[][] downFace = inspectDownFace('Y');
         System.out.println();
+
+        finishDrawing();
 
 
         robot.executeMoves(SEE_OPPOSITE_FACE_FRONT);//turns the cube so that the front face is on the back side of the cube, and therefore the camera can see the front face
@@ -308,7 +315,6 @@ public class OpenCvRaspberryPiCamera implements CubeColorInspector{
 
         char color = classifyColor(square);
 
-        drawTuningGrid(200);
         drawSquare(squareX, squareY, squareWidth, squareHeight, color);
 
 
@@ -412,92 +418,99 @@ public class OpenCvRaspberryPiCamera implements CubeColorInspector{
         }
         return bestColor;
     }
-    public void drawTuningGrid(int gridWidth) {
+    public void startDrawing() {
         try {
-            BufferedImage image = ImageIO.read(new File(outputImage));
+            drawingImage = ImageIO.read(new File(outputImage));
+            graphics = drawingImage.createGraphics();
 
-            Graphics2D g2d = image.createGraphics();
+            graphics.setColor(Color.BLACK);
+            graphics.setFont(new Font("TimesRoman", Font.BOLD, 30));
 
-            g2d.setColor(Color.BLACK);
-            g2d.setFont(new Font("TimesRoman", Font.BOLD, 25));
-
-            int cols = (int) Math.ceil((double) imageWidth / gridWidth);
-            int rows = (int) Math.ceil((double) imageHeight / gridWidth);
-
-            // Draw vertical lines and labels
-            for (int x = 0; x <= imageWidth; x += gridWidth) {
-                g2d.drawLine(x, 0, x, imageHeight);
-
-                if (x < imageWidth) {
-                    g2d.drawString(
-                            String.valueOf(x),
-                            x + 5,
-                            30
-                    );
-                }
-            }
-
-            // Draw horizontal lines and labels
-            for (int y = 0; y <= imageHeight; y += gridWidth) {
-                g2d.drawLine(0, y, imageWidth, y);
-
-                if (y < imageHeight) {
-                    g2d.drawString(
-                            String.valueOf(y),
-                            5,
-                            y - 5
-                    );
-                }
-            }
-
-            // Draw coordinate labels for each grid square
-            for (int row = 0; row < rows; row++) {
-                for (int col = 0; col < cols; col++) {
-
-                    int x = col * gridWidth;
-                    int y = row * gridWidth;
-
-                    String label = "(" + x + "," + y + ")";
-
-                    g2d.drawString(
-                            label,
-                            x + 5,
-                            y + 55
-                    );
-                }
-            }
-
-            g2d.dispose();
-
-            ImageIO.write(image, "jpg", new File(outputImage));
-
-            System.out.println("Drew tuning grid with spacing " + gridWidth + " pixels.");
-
-        } catch (IOException e) {
+        } catch(IOException e){
             e.printStackTrace();
         }
     }
-    public void drawSquare(int squareX, int squareY, int squareWidth, int squareHeight, char color) {
+
+
+    public void finishDrawing() {
         try {
-            BufferedImage image = ImageIO.read(new File(outputImage));//loads the image
+            if(graphics != null) {
+                graphics.dispose();
+            }
 
-            Graphics2D g2d = image.createGraphics();//sets up the graphics of the image
+            if(drawingImage != null) {
+                ImageIO.write(drawingImage, "jpg", new File(outputImage));
+            }
 
-            g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
-
-            g2d.setColor(Color.BLACK);//sets the drawing color to red
-
-            g2d.drawRect(squareX, squareY, squareWidth, squareHeight);//draws the rectangle given the coordinates of the top left corner, the width, and the height
-
-            g2d.drawString(String.valueOf(color),squareX + (squareWidth/2),squareY +(squareHeight/2));
-
-            g2d.dispose();//gets rid of the graphics when it's done to reduce clutter
-
-            ImageIO.write(image, "jpg", new File(outputImage));//replaces the original image with the new image that has the rectangle drawn on it
-
-        } catch (IOException e) {//handles any errors
+        } catch(IOException e){
             e.printStackTrace();
         }
+    }
+    public void drawTuningGrid(int gridWidth) {
+
+        graphics.setColor(Color.BLACK);
+        graphics.setFont(new Font("TimesRoman", Font.BOLD, 25));
+
+        int cols = (int) Math.ceil((double) imageWidth / gridWidth);
+        int rows = (int) Math.ceil((double) imageHeight / gridWidth);
+
+        // vertical lines
+        for (int x = 0; x <= imageWidth; x += gridWidth) {
+            graphics.drawLine(x, 0, x, imageHeight);
+
+            if (x < imageWidth) {
+                graphics.drawString(
+                        String.valueOf(x),
+                        x + 5,
+                        30
+                );
+            }
+        }
+
+        // horizontal lines
+        for (int y = 0; y <= imageHeight; y += gridWidth) {
+            graphics.drawLine(0, y, imageWidth, y);
+
+            if (y < imageHeight) {
+                graphics.drawString(
+                        String.valueOf(y),
+                        5,
+                        y + 30
+                );
+            }
+        }
+
+        // coordinate labels
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+
+                int x = col * gridWidth;
+                int y = row * gridWidth;
+
+                graphics.drawString(
+                        "(" + x + "," + y + ")",
+                        x + 5,
+                        y + 55
+                );
+            }
+        }
+    }
+    public void drawSquare(int squareX, int squareY, int squareWidth, int squareHeight, char color) {
+
+        graphics.setStroke(new BasicStroke(5)); // thickness in pixels
+
+        graphics.drawRect(squareX, squareY, squareWidth, squareHeight);
+
+        graphics.setFont(new Font("TimesRoman", Font.BOLD, 50));
+
+        graphics.drawString(
+                String.valueOf(color),
+                squareX + squareWidth / 2,
+                squareY + squareHeight / 2
+        );
+
+        // optional: reset for other drawings
+        graphics.setStroke(new BasicStroke(1));
     }
 
     public static int getListMedian(List<Integer> list){

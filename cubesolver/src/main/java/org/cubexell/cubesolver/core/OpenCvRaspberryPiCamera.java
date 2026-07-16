@@ -78,23 +78,31 @@ public class OpenCvRaspberryPiCamera implements CubeColorInspector{
 
         finishDrawing();
 
-
         robot.executeMoves(SEE_OPPOSITE_FACE_FRONT);//turns the cube so that the front face is on the back side of the cube, and therefore the camera can see the front face
         outputImage = "cubeColorsF.jpg";// new name for the new picture
+        Thread.sleep(2000);
         captureImage();
+        startDrawing();
         char[][] frontFace = inspectBackFace('G');
+        finishDrawing();
         robot.executeMoves(SEE_OPPOSITE_FACE_FRONT);//returns the cube to solved state
 
         robot.executeMoves(SEE_OPPOSITE_FACE_RIGHT);
         outputImage = "cubeColorsR.jpg";
+        Thread.sleep(2000);
         captureImage();
+        startDrawing();
         char[][] rightFace = inspectLeftFace('R');
+        finishDrawing();
         robot.executeMoves(SEE_OPPOSITE_FACE_RIGHT);
 
         robot.executeMoves(SEE_OPPOSITE_FACE_UP);
         outputImage = "cubeColorsU.jpg";
+        Thread.sleep(2000);
         captureImage();
+        startDrawing();
         char[][] upFace = inspectDownFace('W');
+        finishDrawing();
         robot.executeMoves(SEE_OPPOSITE_FACE_UP);
 
         cubeColors[BACK_FACE_INDEX] = backFace;//sets the cubeColors matrix to the colors that the camera saw
@@ -120,18 +128,21 @@ public class OpenCvRaspberryPiCamera implements CubeColorInspector{
 
             robot.executeMoves(SEE_OPPOSITE_FACE_FRONT);
             outputImage = "tuningStuff1F.jpg";
+            Thread.sleep(2000);
             captureImage();
             inspectBackFace('R');
             robot.executeMoves(SEE_OPPOSITE_FACE_FRONT);
 
             robot.executeMoves(SEE_OPPOSITE_FACE_RIGHT);
             outputImage = "tuningStuff1R.jpg";
+            Thread.sleep(2000);
             captureImage();
             inspectLeftFace('W');
             robot.executeMoves(SEE_OPPOSITE_FACE_RIGHT);
 
             robot.executeMoves(SEE_OPPOSITE_FACE_UP);
             outputImage = "tuningStuff1U.jpg";
+            Thread.sleep(2000);
             captureImage();
             inspectDownFace('G');
             robot.executeMoves(SEE_OPPOSITE_FACE_UP);
@@ -140,6 +151,7 @@ public class OpenCvRaspberryPiCamera implements CubeColorInspector{
 
             outputImage = "tuningStuff2.jpg";
 
+            Thread.sleep(2000);
             captureImage();
 
             inspectBackFace('Y');
@@ -151,18 +163,21 @@ public class OpenCvRaspberryPiCamera implements CubeColorInspector{
 
             robot.executeMoves(SEE_OPPOSITE_FACE_FRONT);
             outputImage = "tuningStuff2F.jpg";
+            Thread.sleep(2000);
             captureImage();
             inspectBackFace('W');
             robot.executeMoves(SEE_OPPOSITE_FACE_FRONT);
 
             robot.executeMoves(SEE_OPPOSITE_FACE_RIGHT);
             outputImage = "tuningStuff2R.jpg";
+            Thread.sleep(2000);
             captureImage();
             inspectLeftFace('G');
             robot.executeMoves(SEE_OPPOSITE_FACE_RIGHT);
 
             robot.executeMoves(SEE_OPPOSITE_FACE_UP);
             outputImage = "tuningStuff2U.jpg";
+            Thread.sleep(2000);
             captureImage();
             inspectDownFace('R');
             robot.executeMoves(SEE_OPPOSITE_FACE_UP);

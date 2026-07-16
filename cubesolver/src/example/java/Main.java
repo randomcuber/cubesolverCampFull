@@ -121,6 +121,9 @@ public class Main {
             Thread.sleep(500);
 
             cubeColors = inspector.inspect();
+            if(autoTune){
+                System.exit(0);
+            }
         }
 
 

@@ -53,7 +53,7 @@ public class OpenCvRaspberryPiCamera implements CubeColorInspector{
 
     }
 
-    public char[][][] inspect() {
+    public char[][][] inspect() throws InterruptedException {
         if(!autoTune){
             readLabReferenceValues();
         }
@@ -199,8 +199,8 @@ public class OpenCvRaspberryPiCamera implements CubeColorInspector{
         piece = 0;
         color = convertFaceColorToIndex(center);
         return new char[][]{//returns a 2 dimensional array of the colors of the back face
-                {
-                        findColor(990+offsetX,730+offsetY,70,45),//gets the color of the top-left piece of the back face. coordinates are of the top-left corner, width, and height.
+                {//gets the color of the top-left piece of the back face. coordinates are of the top-left corner, width, and height.
+                        findColor(990+offsetX,730+offsetY,70,45),
                         findColor(1160+offsetX,550+offsetY,175,60),
                         findColor(1550+offsetX,200+offsetY,150,100),
                 },
@@ -266,7 +266,9 @@ public class OpenCvRaspberryPiCamera implements CubeColorInspector{
 
     public void captureImage() {
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder("libcamera-jpeg", "-o", outputImage, "--width", Integer.toString(imageWidth), "--height", Integer.toString(imageHeight), "--timeout", "1000");//this is basically running a command in terminal that takes a picture with these peramiters.
+            ProcessBuilder processBuilder = new ProcessBuilder("libcamera-jpeg", "-o", outputImage, "--width", Integer.toString(imageWidth),
+                    "--height", Integer.toString(imageHeight), "--timeout", "1000");
+            //this is basically running a command in terminal that takes a picture with these parameters.
 
             Process process = processBuilder.start();
 

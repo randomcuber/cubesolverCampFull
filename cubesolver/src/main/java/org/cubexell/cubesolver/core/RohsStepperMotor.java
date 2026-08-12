@@ -36,7 +36,8 @@ public class RohsStepperMotor implements Motor{
     int motorStepCounter = 0;
     public void doTurn(double stepsToTurn, boolean direction) throws InterruptedException {
         for (int i=0; i<stepsToTurn; i++){//for all steps to turn
-            if (stepSequence[motorStepCounter][0] == 1){//these if statements are to see if a signal should be sent or not. one is sent, 0 is not. one if statement for each pin.
+            if (stepSequence[motorStepCounter][0] == 1){//these if statements are to see if a signal should be sent or not.
+                // one is sent, 0 is not. one if statement for each pin.
                 in1.high();//doing stuff
             } else{
                 in1.low();//not doing stuff
@@ -74,7 +75,8 @@ public class RohsStepperMotor implements Motor{
             numRotations = numRotations*-1;//make it positive now that we have adjusted direction.
         }
         try {
-            doTurn((int) (Math.round(32 * 64 * 2 *numRotations)), direction);//the multiplication is just ticks per revolution x gear ratio x 2 because half stepping
+            doTurn((int) (Math.round(32 * 64 * 2 *numRotations)), direction);//the multiplication is
+            // just ticks per revolution x gear ratio x 2 because half stepping
         } catch (InterruptedException e) {
             System.out.println("Motor in trouble");
         } catch (Exception e) {

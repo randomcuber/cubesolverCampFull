@@ -110,7 +110,7 @@ public class Main {
         }
 		else {
             Process preview = new ProcessBuilder(
-                    "libcamera-hello",
+                    "rpicam-hello",
                     "-t", "0"
             ).start();
             System.out.println("Rotate polarizer to minimize glare. Press Enter to proceed...");
